@@ -23,9 +23,6 @@ def crawl_terms(type):
             for term in terms:
                 term_name = term.find('String').text.lower()
                 vocabulary[term_name] = definition
-        
-    with open(type+'.json', 'w') as outfile:
-        json.dump(vocabulary, outfile)
 
     return vocabulary
 
