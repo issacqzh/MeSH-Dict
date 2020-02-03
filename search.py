@@ -4,16 +4,24 @@ with open('../terms.json', 'r') as file:
     dict= json.load(file)
 with open('../related.json','r') as file:
     related = json.load(file)
-with open('../tree_number.json','r') as file:
-    tree_numbers = json.load(file)
+with open('../tree.json','r') as file:
+    tree = json.load(file)
+with open('../tree2term.json','r') as file:
+    tree2term = json.load(file)
 
 def get_tree_related(term):
-    tree_list=[]
-    if term in tree_numbers:
-        tree_list=tree_numbers[term]
-    # for number in tree_list:
-        
-    return tree_list
+    tree_num_list=[]
+    term_list=[]
+    if term in tree:
+        tree_num_list=tree[term]
+        for number in tree_num_list:
+            all_rel_list=[(key,value) for key, value in tree2term.items() if number[0:-4] in key]
+            for rel in all_rel_list:
+                if len(rel[0]) == len(number) or len(rel[0]) == len(number)-4 or len(rel[0]) ==len(number)+4:
+                    term_list.append(rel[1])
+    term_list=list(set(term_list))
+    term_list.remove(term)
+    return term_list
 
 
 def get_related(term):
@@ -33,7 +41,7 @@ while(1):
         if len(all_related) > 0:
             print('\nAlso Consider:')
             for word in all_related:
-                print(word)
+                print(word,end='                 '), print(dict[word.lower()])
     else:
         print('It can\'t be found')
     
